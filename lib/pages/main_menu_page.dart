@@ -41,140 +41,144 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     Widget header() {
       return Container(
-          height: 198,
-          width: double.infinity,
-          margin: EdgeInsets.fromLTRB(defaultMargin, 16, defaultMargin, 0),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-          child: Stack(
-            children: [
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 200.0,
-                  viewportFraction: 1,
-                  autoPlay: true,
-                  autoPlayInterval: Duration(seconds: 3),
-                  autoPlayAnimationDuration: Duration(milliseconds: 800),
-                  autoPlayCurve: Curves.fastOutSlowIn,
-                  pauseAutoPlayOnTouch: true,
-                  aspectRatio: 2.0,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                ),
-                items: imgList
-                    .map((item) => Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(item),
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  gradient: LinearGradient(
-                    begin: Alignment.centerRight,
-                    end: Alignment.centerLeft,
-                    colors: [
-                      Colors.black.withOpacity(0.1),
-                      Colors.black.withOpacity(0.5),
-                    ],
+        height: 200,
+        margin: EdgeInsets.fromLTRB(defaultMargin, 14, defaultMargin, 0),
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(16.0),
+            // height: 198,
+            // margin: EdgeInsets.fromLTRB(defaultMargin, 16, defaultMargin, 0),
+            // decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+            child: Stack(
+              children: [
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 200.0,
+                    viewportFraction: 1,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayCurve: Curves.fastOutSlowIn,
+                    pauseAutoPlayOnTouch: true,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
                   ),
-                ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      margin: EdgeInsets.only(left: 12, top: 12),
-                      child: Column(
-                        children: [
-                          Text(
-                            'Trending Now',
-                            style: whiteTextStyle.copyWith(
-                                color: Colors.white.withOpacity(0.7)),
-                          ),
-                          Text(
-                            'Sing 2',
-                            style: whiteTextStyle.copyWith(
-                              fontSize: 32,
-                            ),
-                          ),
-                        ],
-                      )),
-                  Spacer(),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: 130,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                          margin: EdgeInsets.only(bottom: 14, left: 14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40),
-                            color: kRedColor,
-                          ),
-                          child: Row(
+                  items: imgList
+                      .map((item) => Stack(
                             children: [
                               Container(
-                                width: 24,
-                                height: 24,
                                 decoration: BoxDecoration(
                                   image: DecorationImage(
-                                    image: AssetImage('assets/ic_poly.png'),
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(item),
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                width: 2,
-                              ),
-                              Text(
-                                'Let’s Watch',
-                                style: whiteTextStyle.copyWith(
-                                  fontSize: 12,
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerRight,
+                                    end: Alignment.centerLeft,
+                                    colors: [
+                                      Colors.black.withOpacity(0.1),
+                                      Colors.black.withOpacity(0.5),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
+                          ))
+                      .toList(),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(left: 12, top: 12),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Trending Now',
+                              style: whiteTextStyle.copyWith(
+                                  color: Colors.white.withOpacity(0.7)),
+                            ),
+                            Text(
+                              'Sing 2',
+                              style: whiteTextStyle.copyWith(
+                                fontSize: 32,
+                              ),
+                            ),
+                          ],
+                        )),
+                    Spacer(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            width: 130,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 8),
+                            margin: EdgeInsets.only(bottom: 14, left: 14),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              color: kRedColor,
+                            ),
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage('assets/ic_poly.png'),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 2,
+                                ),
+                                Text(
+                                  'Let’s Watch',
+                                  style: whiteTextStyle.copyWith(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(right: 12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: map<Widget>(imgList, (index, url) {
-                            return Container(
-                              width: 10.0,
-                              height: 10.0,
-                              margin: EdgeInsets.only(right: 6),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: _currentIndex == index
-                                    ? kWhiteColor
-                                    : kGrey3Color,
-                              ),
-                            );
-                          }),
+                        Container(
+                          margin: EdgeInsets.only(right: 12),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: map<Widget>(imgList, (index, url) {
+                              return Container(
+                                width: 10.0,
+                                height: 10.0,
+                                margin: EdgeInsets.only(right: 6),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: _currentIndex == index
+                                      ? kWhiteColor
+                                      : kGrey3Color,
+                                ),
+                              );
+                            }),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              )
-            ],
-          ));
+                      ],
+                    ),
+                  ],
+                )
+              ],
+            )),
+      );
     }
 
     Widget searchDestination() {

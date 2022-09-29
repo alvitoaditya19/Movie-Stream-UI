@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_stream_app/pages/detail_movie_page.dart';
 import 'package:movie_stream_app/pages/main_menu_page.dart';
 
 void main() {
@@ -12,13 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home:  MenuPage(),
+      debugShowCheckedModeBanner: false,
+      routes: {
+        '/': (context) => MenuPage(),
+        '/detail-movie': (context) => DetailMoviePage(),
+      },
     );
   }
 }
