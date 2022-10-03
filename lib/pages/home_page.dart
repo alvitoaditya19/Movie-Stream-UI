@@ -1,21 +1,33 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:movie_stream_app/models/movie.dart';
+import 'package:movie_stream_app/providers/movie_provider.dart';
+import 'package:movie_stream_app/services/movie_services.dart';
 import 'package:movie_stream_app/shared/theme.dart';
 import 'package:movie_stream_app/widgets/film_card.dart';
 import 'package:movie_stream_app/widgets/movie_continue_card.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:provider/provider.dart';
 
-class MenuPage extends StatefulWidget {
+class HomePage extends StatefulWidget {
   @override
-  _MenuPageState createState() => _MenuPageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MenuPageState extends State<MenuPage> {
+class _HomePageState extends State<HomePage> {
   @override
-  initState() {
+  void initState() {
+    // TODO: implement initState
+
+    getInit();
+
     super.initState();
+  }
+
+  getInit() async {
+    await Provider.of<MovieProvider>(context, listen: false).getMovies();
   }
 
   final List<String> imgList = [
@@ -39,6 +51,9 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    MovieProvider movieProvider = Provider.of<MovieProvider>(context);
+    // print(movieProvider.getMovies());
+
     Widget header() {
       return Container(
         height: 200,
@@ -294,19 +309,47 @@ class _MenuPageState extends State<MenuPage> {
       );
     }
 
-    Widget recommendedFilm() {
-      return Container(
-        margin: EdgeInsets.symmetric(horizontal: defaultMargin),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            FilmCard(),
-            FilmCard(),
-            FilmCard(),
-            FilmCard(),
-          ],
-        ),
-      );
+    Widget contentFilm() {
+      return Consumer<MovieProvider>(builder: (context, state, _) {
+        if (state.state == MovieState.Loading) {
+          return Container(
+            height: 120,
+            child: Center(
+              child: CircularProgressIndicator.adaptive(
+                valueColor: AlwaysStoppedAnimation(kRedColor),
+              ),
+            ),
+          );
+        } else if (state.state == MovieState.HasData) {
+          return MediaQuery.removePadding(
+            context: context,
+            removeTop: true,
+            removeBottom: true,
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(
+                horizontal: defaultMargin,
+              ),
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: state.movies.length,
+              itemBuilder: (context, index) => FilmCard(state.movies[index]),
+            ),
+          );
+        } else {
+          return Padding(
+            padding: EdgeInsets.all(16),
+            child: Center(
+              child: Text(
+                "Data tidak di temukan",
+                style: whiteTextStyle.copyWith(
+                  fontSize: 16,
+                  fontWeight: semiBold,
+                ),
+              ),
+            ),
+          );
+        }
+      });
     }
 
     return Scaffold(
@@ -321,7 +364,7 @@ class _MenuPageState extends State<MenuPage> {
               continueTitle(),
               continueFilm(),
               filmTitle(),
-              recommendedFilm(),
+              contentFilm(),
               SizedBox(
                 height: 80,
               ),

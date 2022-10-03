@@ -52,7 +52,7 @@ class MovieContinueCard extends StatelessWidget {
                     height: 46,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(60),
-                      color: kBackgroundColor.withOpacity(0.4),
+                      color: kWhiteColor.withOpacity(0.4),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

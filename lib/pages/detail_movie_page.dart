@@ -2,21 +2,30 @@ import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_stream_app/models/movie.dart';
+import 'package:movie_stream_app/providers/movie_provider.dart';
+import 'package:movie_stream_app/shared/shared_value.dart';
 import 'package:movie_stream_app/shared/theme.dart';
-
+import 'package:movie_stream_app/widgets/cast_card.dart';
+import 'package:movie_stream_app/widgets/similar_film.dart';
+import 'package:provider/provider.dart';
 
 class DetailMoviePage extends StatefulWidget {
+  final MovieModel? movie;
+  const DetailMoviePage({
+    Key? key,
+    required this.movie,
+  }) : super(key: key);
   @override
   State<DetailMoviePage> createState() => _DetailMoviePageState();
 }
 
 class _DetailMoviePageState extends State<DetailMoviePage> {
   @override
-   initState() {
+  initState() {
     super.initState();
   }
 
-  
   final List<String> imgList = [
     'assets/img_sing2.png',
     'assets/img_continue1.png',
@@ -37,6 +46,49 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
   int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    Widget header() {
+      return Container(
+        margin: EdgeInsets.only(
+            bottom: 20, right: defaultMargin, left: defaultMargin, top: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 38,
+              width: 38,
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4), color: kGreyColor),
+              child: Image.asset(
+                'assets/ic_back_inact.png',
+                width: 20,
+                height: 20,
+              ),
+            ),
+            Spacer(),
+            Text(
+              'Detail Movie',
+              style: whiteTextStyle.copyWith(fontSize: 20, fontWeight: medium),
+            ),
+            Spacer(),
+            Container(
+              height: 38,
+              width: 38,
+              padding: EdgeInsets.all(3),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4), color: kGreyColor),
+              child: Image.asset(
+                'assets/ic_like_inact.png',
+                width: 20,
+                height: 20,
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
     Widget posterFilm() {
       return Container(
         height: 198,
@@ -47,7 +99,9 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
               borderRadius: BorderRadius.circular(16),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage("assets/img_sing2.png"),
+                image: NetworkImage(imageBaseURL +
+                    "w500" +
+                    (widget.movie!.backdropPath! ?? widget.movie!.posterPath!)),
               ),
             ),
           ),
@@ -115,61 +169,192 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
     }
 
     Widget description() {
-      return ClipRRect(
-         borderRadius: BorderRadius.circular(30.0),
-        // height: 500,
-        // decoration: BoxDecoration(
-        //     borderRadius: BorderRadius.circular(40), color: Colors.red,),
-        // margin: EdgeInsets.fromLTRB(defaultMargin, 14, 0, 14),
+      return Container(
+        margin: EdgeInsets.fromLTRB(defaultMargin, 14, defaultMargin, 14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Sing 2',
+              widget.movie!.title!,
               style: whiteTextStyle.copyWith(
                 fontSize: 20,
                 fontWeight: medium,
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Container(
+                  height: 8,
+                  width: 8,
+                  decoration: BoxDecoration(
+                    color: kGrey2Color,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  'Family Film',
+                  style: grey2TextStyle.copyWith(
+                    fontSize: 12,
+                  ),
+                ),
+                SizedBox(
+                  width: 14,
+                ),
+                Container(
+                  height: 8,
+                  width: 8,
+                  decoration: BoxDecoration(
+                    color: kGrey2Color,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  'Schi-Fi',
+                  style: grey2TextStyle.copyWith(
+                    fontSize: 12,
+                  ),
+                ),
+                SizedBox(
+                  width: 14,
+                ),
+                Container(
+                  height: 8,
+                  width: 8,
+                  decoration: BoxDecoration(
+                    color: kGrey2Color,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  '7 Januari 2022',
+                  style: grey2TextStyle.copyWith(
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
             Text(
-              'Film ini mengikuti Buster dan pemeran barunya yang sekarang mengincar debut pertunjukan baru di Crystal Tower Theatre di Redshore City yang glamor. Tetapi tanpa koneksi, dia dan para...',
+              widget.movie!.overview!,
+              maxLines: 5,
               style: grey2TextStyle.copyWith(
                 fontSize: 14,
               ),
+              overflow: TextOverflow.ellipsis,
             ),
-            CarouselSlider(
-              options: CarouselOptions(
-                height: 200.0,
-                viewportFraction: 1,
-                autoPlay: false,
-                autoPlayInterval: Duration(seconds: 3),
-                autoPlayAnimationDuration: Duration(milliseconds: 800),
-                autoPlayCurve: Curves.fastOutSlowIn,
-                pauseAutoPlayOnTouch: true,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-              ),
-              items: imgList
-                  .map((item) => ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: AssetImage(item),
-                            ),
-                          ),
-                        ),
-                  ))
-                  .toList(),
-            ),
-               ],
+          ],
         ),
       );
+    }
+
+    Widget cast() {
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: defaultMargin),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Cast',
+              style: whiteTextStyle.copyWith(
+                fontSize: 18,
+                fontWeight: medium,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  CastCard(),
+                  CastCard(),
+                  CastCard(),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    }
+
+    Widget similarFilm() {
+      return Container(
+        margin:
+            EdgeInsets.only(top: 20, left: defaultMargin, right: defaultMargin),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Similar Movie',
+              style: whiteTextStyle.copyWith(
+                fontSize: 18,
+                fontWeight: medium,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ],
+        ),
+      );
+    }
+
+    Widget contentSimilarFilm (){
+      return      Consumer<MovieProvider>(builder: (context, state, _) {
+              if (state.state == MovieState.Loading) {
+                return Container(
+                  height: 120,
+                  child: Center(
+                    child: CircularProgressIndicator.adaptive(
+                      valueColor: AlwaysStoppedAnimation(kRedColor),
+                    ),
+                  ),
+                );
+              } else if (state.state == MovieState.HasData) {
+                return Container(
+                  height: 160,
+                  child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: defaultMargin,
+                      ),
+                      shrinkWrap: true,
+                      itemCount: state.movies.length,
+                      itemBuilder: (context, index) =>
+                          SimilarFilm(state.movies[index]),
+                    ),
+                );
+              } else {
+                return Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(
+                    child: Text(
+                      "Data tidak di temukan",
+                      style: whiteTextStyle.copyWith(
+                        fontSize: 16,
+                        fontWeight: semiBold,
+                      ),
+                    ),
+                  ),
+                );
+              }
+            });
+     
     }
 
     return Scaffold(
@@ -178,7 +363,14 @@ class _DetailMoviePageState extends State<DetailMoviePage> {
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [posterFilm(), description()],
+            children: [
+              header(),
+              posterFilm(),
+              description(),
+              cast(),
+              similarFilm(),
+              contentSimilarFilm ()
+            ],
           ),
         ),
       ),

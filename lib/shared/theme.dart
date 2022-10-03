@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 const double defaultMargin = 24;
 
 Color kBackgroundColor = Color(0xff090936);
+Color kBackgroundColor2 = Color(0xff111140);
+
 Color kBlueColor = Color(0xff308CF8);
 
 Color kRedColor = Color(0xFFF93D45);
